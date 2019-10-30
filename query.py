@@ -78,5 +78,5 @@ while 1:
             try:
                 print(time, queryTable[str(timeCounter)][IP][cpu_id])
             except:
-                print("Input-type error")
+                print("Can't find any records")
             timeCounter += 60
