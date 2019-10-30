@@ -1,5 +1,20 @@
 import sys, glob, os, time, datetime
 
+def check(query):
+    if len(query) < 6:
+        print("missing input")
+        return False
+    if query[1] != "0" and query[1] != "1":
+        print("wrong cpu_id")
+        return False
+    if len(query[3]) != 5 or len(query[5]) != 5:
+        print("wrong hour-minute")
+        return False
+    if len(query[2]) != 10 or len(query[4]) != 10:
+        print("wrong year-month-day")
+        return False
+    return True
+
 while 1:
     if len(sys.argv) < 2:
         folder = input("Enter a folder name: ") 
@@ -39,10 +54,12 @@ for file in glob.glob("*.log"):
 
 while 1:
     query = input("QUERY: ")
+    queryList = query.split(" ")
     if query == "exit":
         break
-    else:
-        queryList = query.split(" ")
+    elif not check(queryList):
+        print("Input-type error")
+    else:       
         IP = queryList[0]
         cpu_id = queryList[1]
         temList_1 = queryList[2].split("-") + queryList[3].split(":")
@@ -58,5 +75,8 @@ while 1:
         print(f"CPU{cpu_id} usage on {IP}:")
         while timeCounter < end_time_stamp:
             time = datetime.datetime.fromtimestamp(timeCounter)
-            print(time, queryTable[str(timeCounter)][IP][cpu_id])
+            try:
+                print(time, queryTable[str(timeCounter)][IP][cpu_id])
+            except:
+                print("Input-type error")
             timeCounter += 60
